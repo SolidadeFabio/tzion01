@@ -18,6 +18,6 @@ class Product(models.Model):
     supplier = models.ForeignKey(
         Supplier,
         related_name='product',
-        on_delete='CASCADE'
+        on_delete=models.CASCADE,
     )
     

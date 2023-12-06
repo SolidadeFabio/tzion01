@@ -1,0 +1,96 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+  {% include 'material-dashboard/parciais/_head.html' %}
+  {% block css %}{% endblock %}
+  <title>Gestor Tzion</title>
+</head>
+
+  <body class="g-sidenav-show  bg-gray-100">
+
+    {% include 'material-dashboard/parciais/_menu.html' %}
+
+      <main class="main-content border-radius-lg ">
+
+    {% include 'material-dashboard/parciais/_nav.html' %} 
+    {% load static %}
+    <!-- Navbar -->
+ 
+      <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
+      <div class="container-fluid py-1 px-3">
+        <nav aria-label="breadcrumb">
+          
+          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+            <li class="breadcrumb-item text-sm custom-link"><a class="opacity-5 text-dark" href="/">Projetos</a></li>
+            {% block breadcrumb %}
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Página Atual</li>
+            {% endblock %}
+        </ol>
+          <h6 class="font-weight-bolder mb-0">{% block titulo %}{% endblock %}</h6>
+                    
+        </nav>
+        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+          <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+            
+         <form method="GET" action="">
+            <div class="input-group input-group-outline">
+              <label class="form-label">Pesquise aqui ...</label>
+              <input type="text" class="form-control" name="q" id="q">
+              <input type="submit" value="pesquisar" style="display: none;">
+            </div>
+          </form>
+        </div>
+        <ul class="navbar-nav  justify-content-end">
+          <!-- <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+            <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
+              <div class="sidenav-toggler-inner">
+                <i class="sidenav-toggler-line"></i>
+                <i class="sidenav-toggler-line"></i>
+                <i class="sidenav-toggler-line"></i>
+              </div>
+            </a>
+          </li> -->
+          <!-- <li class="nav-item px-3 d-flex align-items-center">
+            <a href="javascript:;" class="nav-link text-body p-0">
+              <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer"></i>
+            </a>
+          </li> -->
+          <li class="nav-item px-3 d-flex align-items-center">
+            {% if user.is_authenticated %}
+            <a href="javascript:;" class="nav-link text-body p-0">
+              <span class="d-sm-inline d-none fixed-plugin-button-nav cursor-pointer"><i class="fa fa-user me-sm-1"></i>{{ user.get_username }}</span>
+            </a>
+            {% else %}
+            <li><a href="" class="nav-link text-body font-weight-bold px-0">
+              <i class="fa fa-user me-sm-1"></i><span class="d-sm-inline d-none">Entrar</span>
+            </a></li>
+            {% endif %}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+  
+  <!-- End Navbar -->
+    
+            <div class="container-fluid py-4">
+                
+              {% block conteudo %}{% endblock %}
+
+            </div>
+
+         
+       </main>
+    
+
+       {% include 'material-dashboard/parciais/_plugin.html' %}
+      
+       {% block js %}{% endblock %}
+  </body>
+
+</html>

@@ -3,6 +3,7 @@ from django_htmx.http import retarget
 from project.models import Product
 from project.forms import ProductForm
 from decimal import Decimal
+from django.http import JsonResponse
 
 def show_product(request):
     if request.htmx:
@@ -11,6 +12,12 @@ def show_product(request):
             'products': products
         }
         return render(request, 'product/show.html', context)
+    
+def product_json(request):
+    products = Product.objects.all()
+    data = [product.to_dict_json() for product in products]
+    response = {'data': data}
+    return JsonResponse(response)
     
 def create_product_page(request):
     if request.htmx:

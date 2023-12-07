@@ -1,0 +1,112 @@
+{% load filters %}
+
+<div class="row my-2">
+    <div class="col-12">
+      <div class="card my-4">
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-3">
+                <div class="row">
+                    <div class="col-6 d-flex align-items-center">
+                        <h6 class="text-white ps-3">Produtos</h6>
+                    </div>
+                    <div class="col-6 text-end pe-4">
+                        <a hx-get="{% url 'create_product' %}" hx-target=".product" hx-trigger="click" class="btn bg-gradient-dark"><span class="material-icons">add</span>Novo Produto</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body px-0 pb-2">
+            <div class="table-responsive p-0">
+                <table id="table" class="table align-items-center mb-0">
+                    <thead>
+                        <tr>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nome</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Código de Compra</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Preço de Compra</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Código de Venda</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Preço de Venda</th>
+                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Marca</th>
+                            <th data-class-name="priority" class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Tipo do Produto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in products %}
+                        <tr>
+                            <td>
+                                <div class="text-center">
+                                    <h6 class="mb-0 text-sm">
+                                        {{ product.name }}
+                                    </h6>
+                                </div>
+                            </td>
+                            <td>
+                                <a href="" class="custom-link text-center">
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <div class="mb-0 text-sm">
+                                            {{ product.purch_cod|replace_comma }}
+                                        </div>
+                                    </div>
+                                </a>
+                            </td>
+                            <td>
+                                <div class="text-center">
+                                    <div class="d-flex flex-column">
+                                        <h6 class="mb-0 text-sm">
+                                            {{ product.purch_price|floatformat:2 }}
+                                        </h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="text-center">
+                                    <div class="d-flex flex-column">
+                                        <h6 class="mb-0 text-sm">
+                                            {{ product.sell_cod|replace_comma }}
+                                        </h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="text-center">
+                                    <div class="d-flex flex-column">
+                                        <h6 class="mb-0 text-sm">
+                                            {{ product.sell_price|floatformat:2 }}
+                                        </h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="text-center">
+                                    <div class="d-flex flex-column">
+                                        <h6 class="mb-0 text-sm">
+                                            {{ product.brand }}
+                                        </h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="text-center">
+                                    <div class="d-flex flex-column">
+                                        <h6 class="mb-0 text-sm">
+                                            {{ product.product_type }}
+                                        </h6>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>  
+    </div>
+</div>
+
+<script>
+
+    $(document).ready( function () {
+        $('#table').DataTable();
+    } );
+
+</script>
+

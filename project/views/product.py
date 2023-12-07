@@ -1,11 +1,18 @@
 from django.shortcuts import render
+from project.models import Product
 
-def product_home(request):
-    
+def show_product(request):
     if request.htmx:
-        return render(request, 'product.html')
-    else:
-        print("Deu ruim :(")
+        products = Product.objects.all()
+        context = {
+            'products': products
+        }
+        return render(request, 'product/show.html', context)
+    
+def create_product(request):
+    if request.htmx:
+        return render(request, 'product/create.html')
+
         
 
         

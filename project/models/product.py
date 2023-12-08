@@ -51,5 +51,5 @@ class Product(models.Model):
             'sell_cod': self.sell_cod,
             'sell_price': self.sell_price,
             'product_type': self.product_type,
-            'supplier': str(self.supplier.name) if self.supplier.name else None,  
+            'supplier': str(self.supplier.name) if self.supplier.name else "Não encontrado",  
         }

@@ -1,0 +1,86 @@
+
+
+
+
+
+<div class="row my-2">
+    <div class="col-12">
+      <div class="card my-4">
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="bg-gradient-info shadow-info border-radius-lg pt-4 pb-2">
+                <div class="row">
+                    <div class="col-6 d-flex align-items-center">
+                        <h6 class="text-white ps-3">PRODUTOS</h6>
+                    </div>
+                    <div class="col-6 d-flex align-items-center justify-content-end pe-4 pb-2">
+                        <a hx-get="" hx-target=".product" hx-trigger="click" class="btn bg-gradient-dark me-2">
+                            <span class="material-icons">add</span> Novo Fornecedor
+                        </a>
+                        <a hx-get="{% url 'create_product_page' %}" hx-target=".product" hx-trigger="click" class="btn bg-gradient-dark">
+                            <span class="material-icons">add</span> Novo Produto
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>        
+        <div class="card-body px-0 pb-3">
+            <div class="table-responsive p-3">
+                <table id="table" class="table align-items-center mb-0 p-0 m-0">
+                    <thead>
+                        <tr>
+                            <th class="text-center text-uppercase text-secondary  opacity-7">Nome</th>
+                            <th class="text-center text-uppercase text-secondary  opacity-7 ps-2">Quantidade</th>
+                            <th class="text-center text-uppercase text-secondary  opacity-7 ps-2">Número CAS</th>
+                            <th class="text-center text-uppercase text-secondary  opacity-7 ps-2">Marca</th>
+                            <th class="text-center text-uppercase text-secondary  opacity-7 ps-2">Código de Venda</th>
+                            <th class="text-center text-uppercase text-secondary  opacity-7 ps-2">Preço de Venda</th>
+                            <th class="text-center text-uppercase text-secondary  opacity-7 ps-2">Tipo do Produto</th>
+                            <th class="text-center text-uppercase text-secondary  opacity-7 ps-2">Fornecedor</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>  
+    </div>
+</div>
+
+<script>
+
+$(document).ready( function () {
+    $('#table').DataTable({
+        "ajax": "/product_json/",
+        "columns": [
+            {"data": "name", 
+                "render": (data, type, row) => {
+                        const detailUrl = `/detail_product/${row.pk}/`;
+                        return `<a hx-get="${detailUrl}" hx-target=".product" hx-trigger="click">${data}</a>`;
+                    }, 
+                "className": "text-center text-uppercase text-seccondary opacity-8"},
+            {"data": "quantity", "className": "text-center text-uppercase text-seccondary opacity-8"},
+            {"data": "cas_number", "className": "text-center text-uppercase text-seccondary opacity-8"},
+            {"data": "brand", "className": "text-center text-uppercase text-seccondary opacity-8"},
+            {"data": "sell_cod", "className": "text-center text-uppercase text-seccondary opacity-8"},
+            {"data": "sell_price", 
+                "render": (data) => {
+                    data = Math.trunc(data * 100) / 100; 
+                    return data
+                },
+                "className": "text-center text-uppercase text-seccondary opacity-8"},
+            {"data": "product_type", "className": "text-center text-uppercase text-seccondary opacity-8"},
+            {"data": "supplier", "className": "text-center text-uppercase text-seccondary opacity-8"},
+        ],
+        "columnDefs": [
+            { "width": "2%", "targets": [0, 1, 2, 3, 4, 5, 6]},
+            { "width": "5%", "targets": [7]} 
+        ]
+    });
+    // Delegação de eventos para os links HTMX
+    $('#table').on('click', 'a[htmx-get]', function(e) {
+        e.preventDefault();
+        console.log('cliquei')
+        // Aqui você pode disparar a solicitação HTMX manualmente ou manipular o evento como necessário
+    });
+} );
+
+</script>
+

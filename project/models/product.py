@@ -3,8 +3,13 @@ from. supplier import Supplier
 
 class Product(models.Model):
     TYPE_CHOICE = (
-        ('national', 'nacional'),
-        ('imported', 'importado'),
+        ('NATIONAL', 'NACIONAL'),
+        ('IMPORTED', 'IMPORTADO'),
+    )
+    
+    TYPE_QUANTITY_CHOICE = (
+        ('UN', 'UN'),
+        ('PK', 'PK'),
     )
     name = models.CharField(max_length=100, default='')
     cas_number = models.CharField(max_length=100)
@@ -15,7 +20,8 @@ class Product(models.Model):
     sell_cod = models.CharField(max_length=50)
     sell_price = models.DecimalField(max_digits=16, decimal_places=4)
     product_type = models.CharField(max_length=10, choices=TYPE_CHOICE)
-    quantity = models.IntegerField(default=0)
+    quantity_type = models.CharField(max_length=2 ,choices=TYPE_QUANTITY_CHOICE)
+    quantity = models.IntegerField()
     created_at = models.DateTimeField(auto_now=True)
     
     supplier = models.ForeignKey(
@@ -40,11 +46,10 @@ class Product(models.Model):
             'name': self.name,
             'quantity': self.quantity,
             'cas_number': self.cas_number,
-            'purch_price': self.purch_price,
             'purch_cod': self.purch_cod,
             'brand': self.brand,
             'sell_cod': self.sell_cod,
             'sell_price': self.sell_price,
             'product_type': self.product_type,
-            'supplier': self.supplier,
+            'supplier': str(self.supplier.name) if self.supplier.name else None,  
         }

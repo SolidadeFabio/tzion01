@@ -16,41 +16,34 @@
         <div class="card-body">
             <form>
                 {% csrf_token %}
-
                 <div class="row">
                     <div class="col-lg-2">
-                        <div class="input-group input-group-static mb-4">
-                            <label class="form-label">Nome</label>
+                        <div class="input-group input-group-dynamic mb-4">
                             {{ form.name }}
                         </div>
                     </div>
                     <div class="col-lg-2">
                         <div class="input-group input-group-static mb-4">
-                            <label class="form-label">Numero CAS</label>
                             {{ form.cas_number }}
                         </div>
                     </div>
                     <div class="col-lg-2">
                         <div class="input-group input-group-static mb-4">
-                            <label class="form-label">Preço de Compra</label>
                             {{ form.purch_price }}
                         </div>
                     </div>
                     <div class="col-lg-2">
                         <div class="input-group input-group-static mb-4">
-                            <label class="form-label">Código de Compra</label>
                             {{ form.purch_cod }}
                         </div>
                     </div>
                     <div class="col-lg-2">
                         <div class="input-group input-group-static mb-4">
-                            <label class="form-label">Preço de Venda</label>
                             {{ form.sell_price }}
                         </div>
                     </div>
                     <div class="col-lg-2">
                         <div class="input-group input-group-static mb-4">
-                            <label class="form-label">Código de Venda</label>
                             {{ form.sell_cod }}
                         </div>
                     </div>
@@ -58,50 +51,100 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="input-group input-group-static mb-4">
-                            <label class="form-label">Descrição</label>
                             {{ form.description }}
                         </div>
                     </div>
                     <div class="col-lg-2">
                         <div class="input-group input-group-static mb-4">
-                            <label class="form-label">Marca</label>
                             {{ form.brand }}
                         </div>
                     </div>
                     <div class="col-lg-2">
                         <div class="input-group input-group-static mb-4">
-                            <label class="form-label">Tipo do Produto</label>
                             {{ form.product_type }}
                         </div>
                     </div>
                     <div class="col-lg-2">
                         <div class="input-group input-group-static mb-4">
-                            <label class="form-label">Fornecedor</label>
                             {{ form.supplier }}
                         </div>
                     </div>
 
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="input-group input-group-static mb-4">
+                                {{ form.quantity }}
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <div class="input-group input-group-static mb-4">
+                                {{ form.quantity_type }}
+                            </div>
+                        </div>
+                    </div>
+                    
 
                     <div class="row">
-                        <div class="col-sm-1 me-md-0">
+                        <div class="col-sm-1">
                             <button hx-post="{% url 'create_product' %}" hx-target="#save_response" type="submit" class="btn btn-info">Salvar</button>
                         </div>
-                        <div class="col-sm-1 me-md-0">
+                        <div class="col-sm-1 ">
                             <a href="" class="btn btn-primary">Cancelar</a>
                         </div>
                         <div class="col-sm-4">
                             <a href="#" data-bs-toggle="modal" data-bs-target="#modal-criar" style="margin-right: 10px;">
-                                <button class="btn btn-success me-2">
-                                    Cadastrar Novo Fornecedor
-                                </button>
+                                <button class="btn btn-success me-2">Cadastrar Novo Fornecedor</button>
                             </a>
                         </div>
                     </div>
                 </div>
             </form>
         </div>
-        <div id="save_response">
+        <div id="save_response"></div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-criar" tabindex="-1" role="dialog" aria-labelledby="modal-edit" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-normal" id="modal-title-edit">Cadastrar Fornecedor</h5>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">X</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form> 
+                    {% csrf_token %} 
+                    <div class="card"> 
+                        <div class="card-body">        
+                            <div class="row">
+                                <div class="input-group input-group-static my-3 col">
+                                    <label>Razão Social {% if razao_social_obrigatoria %}(Obrigatório){% else %}(Opcional){% endif %}</label>
+                                    <input type="text" class="form-control" name="razao_social" id="razao_social" {% if razao_social_obrigatoria %}required{% endif %}>
+                                </div>
+                                <div class="input-group input-group-static my-3 col">
+                                    <label>CNPJ</label>
+                                    <input type="text" class="form-control" name="cnpj" id="cnpj">
+                                </div>       
+                                <input hx-post="create_supplier" hx-trigger="click" hx-target="#save-supplier" type="submit" value="Salvar" class="btn btn-info">
+                                <div id="save-supplier"></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
     
+
+<script>
+    $(document).ready(function(){
+        $('#cnpj').mask('00.000.000/0000-00', {reverse: false});
+    
+        $('#cnpj').on('input', function(e) {
+            this.value = this.value.replace(/[^0-9\.\/-]/g, '');
+        });
+    });
+</script>

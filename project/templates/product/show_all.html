@@ -44,11 +44,13 @@
 $(document).ready( function () {
     $('#table').DataTable({
         "ajax": "/product_json/",
+        serverside: true,
+        processing: true,
         "columns": [
             {"data": "name", 
                 "render": (data, type, row) => {
                         const detailUrl = `/detail_product/${row.pk}/`;
-                        return `<a hx-get="${detailUrl}" hx-target=".product" hx-trigger="click">${data}</a>`;
+                        return `<a href="${detailUrl}" hx-get="${detailUrl}" hx-target=".product" hx-trigger="click">${data}</a>`;
                     }, 
                 "className": "text-center text-uppercase text-seccondary opacity-8"},
             {"data": "quantity", "className": "text-center text-uppercase text-seccondary opacity-8"},
@@ -69,13 +71,7 @@ $(document).ready( function () {
             { "width": "5%", "targets": [7]} 
         ]
     });
-    // Delegação de eventos para os links HTMX
-    $('#table').on('click', 'a[htmx-get]', function(e) {
-        e.preventDefault();
-        console.log('cliquei')
-        // Aqui você pode disparar a solicitação HTMX manualmente ou manipular o evento como necessário
-    });
-} );
+});
 
 </script>
 

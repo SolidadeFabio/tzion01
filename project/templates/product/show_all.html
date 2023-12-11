@@ -41,37 +41,49 @@
 
 <script>
 
-$(document).ready( function () {
-    $('#table').DataTable({
-        "ajax": "/product_json/",
-        serverside: true,
-        processing: true,
-        "columns": [
-            {"data": "name", 
-                "render": (data, type, row) => {
-                        const detailUrl = `/detail_product/${row.pk}/`;
-                        return `<a href="${detailUrl}" hx-get="${detailUrl}" hx-target=".product" hx-trigger="click">${data}</a>`;
-                    }, 
-                "className": "text-center text-uppercase text-seccondary opacity-8"},
-            {"data": "quantity", "className": "text-center text-uppercase text-seccondary opacity-8"},
-            {"data": "cas_number", "className": "text-center text-uppercase text-seccondary opacity-8"},
-            {"data": "brand", "className": "text-center text-uppercase text-seccondary opacity-8"},
-            {"data": "sell_cod", "className": "text-center text-uppercase text-seccondary opacity-8"},
-            {"data": "sell_price", 
-                "render": (data) => {
-                    data = Math.trunc(data * 100) / 100; 
-                    return data
-                },
-                "className": "text-center text-uppercase text-seccondary opacity-8"},
-            {"data": "product_type", "className": "text-center text-uppercase text-seccondary opacity-8"},
-            {"data": "supplier", "className": "text-center text-uppercase text-seccondary opacity-8"},
-        ],
-        "columnDefs": [
-            { "width": "2%", "targets": [0, 1, 2, 3, 4, 5, 6]},
-            { "width": "5%", "targets": [7]} 
-        ]
+    $(document).ready( function () {
+        $('#table').DataTable({
+            "ajax": "/product_json/",
+            serverside: true,
+            processing: true,
+            "columns": [
+                {"data": "name", 
+                    render: function(data, type, row, meta){
+                        if(type === 'display'){
+                            return '<a hx-get="/detail_product/' + row.pk + '/" hx-target=".product" hx-trigger="click">' + data + '</a>';
+                        }
+                        return data;
+                    },
+                    "className": "text-center text-uppercase text-seccondary opacity-8"},
+                {"data": "quantity", "className": "text-center text-uppercase text-seccondary opacity-8"},
+                {"data": "cas_number", "className": "text-center text-uppercase text-seccondary opacity-8"},
+                {"data": "brand", "className": "text-center text-uppercase text-seccondary opacity-8"},
+                {"data": "sell_cod", "className": "text-center text-uppercase text-seccondary opacity-8"},
+                {"data": "sell_price", 
+                    "render": (data) => {
+                        data = Math.trunc(data * 100) / 100; 
+                        return data
+                    },
+                    "className": "text-center text-uppercase text-seccondary opacity-8"},
+                {"data": "product_type", "className": "text-center text-uppercase text-seccondary opacity-8"},
+                {"data": "supplier", "className": "text-center text-uppercase text-seccondary opacity-8"},
+            ],
+            "columnDefs": [
+                { "width": "2%", "targets": [0, 1, 2, 3, 4, 5, 6]},
+                { "width": "5%", "targets": [7]} 
+            ],
+            "initComplete": function( settings, json ) {
+                htmx.process('#table');
+            },
+        });
+    
+        document.body.addEventListener('htmx:afterRequest', function(evt) {
+            productDataTable.ajax.reload(function() {
+                htmx.process('#table');
+            }, false)
+        });
     });
-});
+    
 
 </script>
 
